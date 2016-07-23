@@ -1,6 +1,8 @@
 {Out.ar([0,1], SoundIn.ar(0))}.play;
 ~rhythmSpeed = 1.0;
 
+
+
 // Buffers
 (
 ~rhythmArray = [ 0.19156461954117, 0.41795918345451, 0.063854873180389, 0.40634921193123, 0.4295691549778, 0.092879816889763, 0.23800453543663, 0.092879816889763, 0.20317460596561, 0.22639456391335, 0.19736962020397, 0.10448979586363, 0.098684810101986 ];
@@ -43,9 +45,6 @@
 ~pitch = 0;
 
 )
-
-~rhythmArray.size;
-
 
 // Synth Defs
 
@@ -158,8 +157,6 @@ SynthDef(\Output, {arg inBus, out = 0, volume = 0.5;
 
 Synth(\recordOnset);
 
-
-
 // Start Up Synths
 
 (
@@ -191,12 +188,7 @@ Synth(\recordOnset);
 ~gate.set(\laxtime, 50);
 
 )
-(
-~getRhythm.remove;
-~oscSeq.clear;
-// Must remove OSCFunc or you will build them up
-)
-Function
+
 // register to receive this message
 	(
 
@@ -337,6 +329,9 @@ Pen.addRect(Rect(10, 60, 240, 120));
 w.front;
 )
 ///////////////////////////////////////////////////////////////////////////
+
+// Scene Defintions /////////////
+
 (
 ~oneScene =
 {
@@ -365,6 +360,11 @@ w.front;
 ~shiftPitchKnob.valueAction = 0.0;
 };
 )
+////////////////////////////////
+
+~oneScene.value;
+~twoScene.value;
+~stop.value;
 //////////////////////////////////////////////////////////////////////////////////
 // CC and MIDI
 (
@@ -439,52 +439,6 @@ w.front;
 );
 
 )
-
-CCResponder.removeAll;
-~bufrecordVolume;
-
-// Scene Defintions /////////////
-
-(
-~oneScene =
-{
-~volume_delay.valueAction = 0.0;
-~volume_reverb.valueAction = 1.0;
-~base_pitch.valueAction = 0.0;
-
-};
-
-~twoScene =
-{
-~volume_delay.valueAction = 0.6;
-~volume_reverb.valueAction = 0.7;
-~base_pitch.valueAction = 0.6;
-~shiftKnob.valueAction = 0.7;
-~shiftPitchKnob.valueAction = 0.9;
-
-};
-
-~stop =
-{
-~volume_delay.valueAction = 0.0;
-~volume_reverb.valueAction = 0.0;
-~base_pitch.valueAction = 0.0;
-~shiftKnob.valueAction = 0.0;
-~shiftPitchKnob.valueAction = 0.0;
-};
-)
-////////////////////////////////
-
-~oneScene.value;
-~twoScene.value;
-~stop.value;
-
-
-
-
-
-~stop.value;
-
 
 ///////////////// MIDI TRIGGER
 (
@@ -579,8 +533,13 @@ r= Routine({
 )
 r.stop;
 
-~shiftVolume;
 
 
 ~shiftPitchKnob.valueAction = ~shiftVolume/37;
+
+(
+~getRhythm.remove;
+~oscSeq.clear;
+// Must remove OSCFunc or you will build them up
+)
 
